@@ -31,8 +31,9 @@ services:
         container_name: app_angular
         build:
             context: .
-            dockerfile: ./docker/angular/Dockerfile
+            dockerfile: docker/angular/Dockerfile
         ports:
             - '81:80'
         depends_on:
             - spring
+
