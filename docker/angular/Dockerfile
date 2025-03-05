@@ -2,19 +2,23 @@ FROM node:22 as build
 
 WORKDIR /app
 
-COPY app_angular/package*.json ./
-
+# Copie package.json et installe les dépendances
+COPY frontend/package*.json ./
 RUN npm install -g npm@latest
-
-COPY app_angular/. ./
-
 RUN npm install
+
+# Copie tout le projet
+COPY frontend/. .  
+
+# Build l’application Angular
 RUN npm run build
 
 FROM nginx:latest
 
-COPY --from=build /app/dist/app_angular /usr/share/nginx/html
+# Copie le build Angular dans Nginx
+COPY --from=build /app/dist/frontend /usr/share/nginx/html
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
